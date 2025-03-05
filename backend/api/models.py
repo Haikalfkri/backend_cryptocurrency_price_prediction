@@ -15,6 +15,11 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, role=None):
         if not email:
             raise ValueError('The Email field must be set')
+
+        # set default role to user
+        if role is None:
+            role, _ = Role.objects.get_or_create(name='user')
+
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, role=role)
         user.set_password(password)
@@ -22,7 +27,8 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password):
-        admin_role = Role.objects.get_or_create(name='admin')
+        admin_role, _ = Role.objects.get_or_create(name='admin')
+
         user = self.create_user(username, email, password, role=admin_role)
         user.is_superuser = True
         user.is_staff = True

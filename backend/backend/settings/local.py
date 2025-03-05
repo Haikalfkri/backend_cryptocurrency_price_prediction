@@ -7,6 +7,8 @@ load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SECRET_KEY=os.environ.get('LOCAL_SECRET_KEY')
+
 ALLOWED_HOSTS = []
 
 # Database
